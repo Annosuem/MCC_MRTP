@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+   <title>MRTP MCC Searching List</title>
+   <meta name="description" content="Events" />
+   <style></style>
+   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+      integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous" />
+   <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+      integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+      crossorigin="anonymous"></script>
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+      integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+      crossorigin="anonymous"></script>
+   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+      integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+      crossorigin="anonymous"></script>
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.7.8/angular.min.js"></script>
+   <script src="https://morgul.github.io/ui-bootstrap4/ui-bootstrap-tpls-3.0.6.js"></script>
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.14.1/moment.min.js"></script>
+   <script>
+      angular
+         .module("app", ["ui.bootstrap"])
+         .controller("tankfarmmcc", function ($scope, $http) {
+            $http.get("tankfarmmcc.json").then(
+               function successCallback(response) {
+                  $scope.codes = response.data;
+                  console.log("MRTP : ");
+                  console.log(response.data);
+               },
+               function errorCallback(response) {
+                  console.log("Unable to perform get request");
+               }
+            );
+         })
+         .filter("myfilter", function () {
+            return function (x) {
+               var i,
+                  c,
+                  txt = "";
+               for (i = 0; i < x.length; i++) {
+                  c = x[i];
+
+                  c = c.toUpperCase();
+
+                  txt += c;
+               }
+               return txt;
+            };
+         });
+         
+   </script>
+</head>
+
+<body>
+   <p id="demo" class="mt-2"></p>
+   <script>
+      const d = new Date();
+      document.getElementById("demo").innerHTML = d;
+   </script>
+   <div ng-app="app" ng-controller="tankfarmmcc">
+      <h3 class="text-center text-white p-2" style="background-color: rgb(246, 18, 249)">
+         ระบบค้นหา MRTP MCC Searching List
+      </h3>
+      <nav style="text-align: center">
+         <img src="https://cdn.pixabay.com/photo/2017/02/15/20/25/switchgear-2069730_1280.jpg" alt="mcc_pic" width="400px" height="250px" />
+      <img src="https://cdn.pixabay.com/photo/2015/07/05/05/00/distribution-room-831956_1280.jpg" alt="heat2_pic" width="400px" height="250px" />
+       </nav>
+      <div class="row">
+         <div class="col-lg-12">
+            <table class="table table-hover">
+               <thead>
+                  <tr class="text-dark" style="background-color: rgb(15, 237, 167)">
+                     <th scope="col"></th>
+                     <th scope="col">USER</th>
+                     <th scope="col">PLANT</th>
+                     <th scope="col">UNIT</th>
+                     <th scope="col">SUBSTATION</th>
+                     <th scope="col">FL_MCC</th>
+                     <th scope="col">EQ_MCC</th>
+                     <th scope="col">MCC_DESCRIPTION</th>
+                     <th scope="col">BRAND</th>
+                   
+                     <th scope="col">DETAILS</th>
+                     
+                    
+                  </tr>
+               </thead>
+               <tbody>
+                  <tr style="background-color: rgb(83, 35, 214)">
+                     <th scope="col"></th>
+                     <th scope="col">
+                        <input ng-model="s.USER" placeholder="ค้นหาUSER" class="form-control input-md" />
+                     </th>
+                     <th scope="col">
+                        <input ng-model="s.PLANT" placeholder="ค้นหาPLANT" class="form-control input-md" />
+                     </th>
+                     <th scope="col">
+                        <input ng-model="s.UNIT" placeholder="ค้นหาUNIT" class="form-control input-md" />
+                     </th>
+                     
+                     <th scope="col">
+                        <input ng-model="s.SUBSTATION" placeholder="ค้นหาSUB" class="form-control input-md" />
+                     </th>
+                     <th scope="col">
+                        <input ng-model="s.FL_MCC" placeholder="ค้นหาFL" class="form-control input-md" />
+                     </th>
+                     <th scope="col">
+                        <input ng-model="s.EQ_MCC" placeholder="ค้นหาEQ" class="form-control input-md" />
+                     </th>
+                     <th scope="col">
+                        <input ng-model="s.MCC_DESCRIPTION" placeholder="ค้นหาDESCRIPTION" class="form-control input-md" />
+                     </th>
+                     <th scope="col">
+                        <input ng-model="s.BRAND" placeholder="ค้นหาBRAND" class="form-control input-md" />
+                     </th>
+                    
+                     <th scope="col">
+                        <input ng-model="s.EQ_MCC" placeholder="กดดูรายละเอียด" class="form-control input-md" />
+                     </th>
+                   
+                     
+                  </tr>
+                  <tr class="font-weight-bold" ng-repeat=" r in  codes.MRTP | filter:s | limitTo: 30">
+                     <td>{{ $index+1}}</td>
+                     <td>{{ r.USER}}</td>
+                     <td>{{ r.PLANT}}</td>
+                     <td class="text-left">{{ r.UNIT}}</td>
+                     <td class="text-left">{{ r.SUBSTATION}}</td>
+                     <td class="text-left">{{ r.FL_MCC}}</td>
+                     <td class="text-left">{{ r.EQ_MCC}}</td>
+                     <td class="text-left">{{ r.MCC_DESCRIPTION}}</td>
+                     <td class="text-left">{{ r.BRAND}}</td>
+                   
+                     <td class="btn btn-sm btn-warning col-12">
+                        <!-- Button trigger modal -->
+      <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalLong">
+        Details
+      </button>
+      
+      <!-- Modal -->
+      <div class="modal fade" id="exampleModalLong" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLongTitle">{{ r.MCC_DESCRIPTION}}</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="text-left modal-body">
+              
+              <div><h6><p1 class="font-weight-bolder"> USER : </p1><p2> {{r.USER}} </p2></h6></div>
+              <div><h6><p1 class="font-weight-bolder"> PLANT: </p1><p2> {{r.PLANT}} </p2></h6></div>
+              <div><h6><p1 class="font-weight-bolder"> UNIT : </p1><p2> {{r.UNIT}} </p2></h6></div>
+              <div><h6><p1 class="font-weight-bolder"> SUBSTATION : </p1><p2> {{r.SUBSTATION}} </p2></h6></div>
+              <div><h6><p1 class="font-weight-bolder"> BRAND : </p1><p2> {{r.BRAND}} </p2></h6></div>
+              <div><h6><p1 class="font-weight-bolder"> INSTALL_YEAR : </p1><p2> {{r.INSTALL_YEAR}} </p2></h6></div>
+              <div><h6><p1 class="font-weight-bolder"> TRANSFORMER : </p1><p2> {{r.TRANSFORMER}} </p2></h6></div>
+              <div><h6><p1 class="font-weight-bolder"> FL_MCC : </p1><p2> {{r.FL_MCC}} </p2></h6></div>
+              <div><h6><p1 class="font-weight-bolder"> EQ_MCC : </p1><p2> {{r.EQ_MCC}} </p2></h6></div>
+              <div><h6><p1 class="font-weight-bolder"> MCC_DESCRIPTION : </p1><p2> {{r.MCC_DESCRIPTION}} </p2></h6></div>
+              <div><h6><p1 class="font-weight-bolder"> CLASS_S_A_B_C : </p1><p2> {{r.CLASS_S_A_B_C}} </p2></h6></div>
+              <div><h6><p1 class="font-weight-bolder"> LAST_PM_MCC : </p1><p2> {{r.LAST_PM_MCC}} </p2></h6></div>                        
+              <div><h6><p1 class="font-weight-bolder"> LAST_THERMOSCAN : </p1><p2> {{r.LAST_THERMOSCAN}} </p2></h6></div>
+              <div><h6><p1 class="font-weight-bolder"> HEALTH_STATUS : </p1><p2> {{r.HEALTH_STATUS}} </p2></h6></div>
+                             
+                          
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+              
+            </div>
+          </div>
+        </div>
+      </div>
+                      </td>
+                  </tr>
+               </tbody>
+            </table>
+         </div>
+      </div>
+   </div>
+</body>
+
+</html>
